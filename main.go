@@ -16,24 +16,24 @@ func runCommand(command string, args ...string) {
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("Failed to execute command: %s %v", command, args)
+		log.Fatalf("Failed to execute: %s %v", command, args)
 	}
 }
 
 func createFile(path string, content string) {
 	err := os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
-		log.Fatalf("Failed to create directory for %s: %v", path, err)
+		log.Fatalf("Cannot create directory %s: %v", path, err)
 	}
 	file, err := os.Create(path)
 	if err != nil {
-		log.Fatalf("Failed to create file %s: %v", path, err)
+		log.Fatalf("Cannot create file %s: %v", path, err)
 	}
 	defer file.Close()
 
 	_, err = file.WriteString(content)
 	if err != nil {
-		log.Fatalf("Failed to write to file %s: %v", path, err)
+		log.Fatalf("Cannot write to file %s: %v", path, err)
 	}
 }
 
@@ -147,10 +147,10 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name:  "new",
-				Usage: "Create a new project",
+				Usage: "create a new project",
 				Action: func(c *cli.Context) error {
 					if c.NArg() < 1 {
-						return fmt.Errorf("you must provide a project name")
+						return fmt.Errorf("provide a project name")
 					}
 					projectName := c.Args().Get(0)
 					setupProject(projectName)
